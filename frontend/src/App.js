@@ -1,53 +1,45 @@
-import { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
-
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+import { AuthProvider } from "./contexts/AuthContext";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Monasteries from "./pages/Monasteries";
+import MonasteryDetail from "./pages/MonasteryDetail";
+import Festivals from "./pages/Festivals";
+import FestivalDetail from "./pages/FestivalDetail";
+import Community from "./pages/Community";
+import Map from "./pages/Map";
+import VirtualTours from "./pages/VirtualTours";
+import Manuscripts from "./pages/Manuscripts";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <AuthProvider>
+      <div className="App min-h-screen bg-background text-foreground">
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/monasteries" element={<Monasteries />} />
+            <Route path="/monasteries/:id" element={<MonasteryDetail />} />
+            <Route path="/festivals" element={<Festivals />} />
+            <Route path="/festivals/:id" element={<FestivalDetail />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/map" element={<Map />} />
+            <Route path="/virtual-tours" element={<VirtualTours />} />
+            <Route path="/virtual-tours/:id" element={<VirtualTours />} />
+            <Route path="/manuscripts" element={<Manuscripts />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+          <Toaster />
+        </BrowserRouter>
+      </div>
+    </AuthProvider>
   );
 }
 
